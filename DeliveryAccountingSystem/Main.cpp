@@ -1,4 +1,4 @@
-#include "Main.h"
+ï»¿#include "Main.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -18,22 +18,22 @@ System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ s
 {
 	dataGridView1->Rows->Clear();
 
-	String^ connection_specs = "provider=Microsoft.Jet.OLEDB.4.0;Data Source = C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb";
+	String^ connection_specs = "provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb";
 	OleDbConnection^ db_connection = gcnew OleDbConnection(connection_specs);
 
 	db_connection->Open();
-	String^ query = "SELECT * FROM [Òîâàðû]";
+	String^ query = "SELECT * FROM [Ð¢Ð¾Ð²Ð°Ñ€Ñ‹]";
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 	OleDbDataReader^ db_reader = db_command->ExecuteReader();
 
 	if (db_reader->HasRows)
 	{
 		while (db_reader->Read())
-			dataGridView1->Rows->Add(db_reader["Êîä"], db_reader["Íàèìåíîâàíèå"], db_reader["Êàòåãîðèÿ"], db_reader["Òðàíñïîðòíîå ñðåäñòâî"], db_reader["Ðàííÿÿ äàòà äîñòàâêè"], db_reader["Ïîçäíÿÿ äàòà äîñòàâêè"], db_reader["Äîñòàâëåí"]);
+			dataGridView1->Rows->Add(db_reader["ÐšÐ¾Ð´"], db_reader["ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ"], db_reader["ÐšÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ñ"], db_reader["Ð¢Ñ€Ð°Ð½ÑÐ¿Ð¾Ñ€Ñ‚Ð½Ð¾Ðµ ÑÑ€ÐµÐ´ÑÑ‚Ð²Ð¾"], db_reader["Ð Ð°Ð½Ð½ÑÑ Ð´Ð°Ñ‚Ð° Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸"], db_reader["ÐŸÐ¾Ð·Ð´Ð½ÑÑ Ð´Ð°Ñ‚Ð° Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸"], db_reader["Ð”Ð¾ÑÑ‚Ð°Ð²Ð»ÐµÐ½"]);
 	}
 	else
 	{
-		MessageBox::Show("Íå óäàëîñü ïðî÷èòàòü äàííûå!", "Îøèáêà");
+		MessageBox::Show("ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð¿Ñ€Ð¾Ñ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ Ð´Ð°Ð½Ð½Ñ‹Ðµ!", "ÐžÑˆÐ¸Ð±ÐºÐ°");
 	}
 
 	db_reader->Close();
@@ -44,5 +44,44 @@ System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ s
 
 System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	if (dataGridView1->SelectedRows->Count != 1) {
+		MessageBox::Show("Ð¡Ñ‚Ñ€Ð¾ÐºÐ° Ð½Ðµ Ð²Ñ‹Ð±Ñ€Ð°Ð½Ð°!", "ÐžÑˆÐ¸Ð±ÐºÐ°");
+		return;
+	}
+
+	int index = dataGridView1->SelectedRows[0]->Index;
+
+	if (dataGridView1->Rows[index]->Cells[0]->Value == nullptr ||
+		dataGridView1->Rows[index]->Cells[1]->Value == nullptr ||
+		dataGridView1->Rows[index]->Cells[2]->Value == nullptr ||
+		dataGridView1->Rows[index]->Cells[3]->Value == nullptr ||
+		dataGridView1->Rows[index]->Cells[4]->Value == nullptr ||
+		dataGridView1->Rows[index]->Cells[5]->Value == nullptr) {
+		MessageBox::Show("ÐÐµ Ð²ÑÐµ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð±Ñ‹Ð»Ð¸ Ð²Ð²ÐµÐ´ÐµÐ½Ñ‹!", "ÐžÑˆÐ¸Ð±ÐºÐ°");
+		return;
+	}
+
+	Int32 code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
+	String^ title = dataGridView1->Rows[index]->Cells[1]->Value->ToString();
+	String^ category = dataGridView1->Rows[index]->Cells[2]->Value->ToString();
+	String^ transport = dataGridView1->Rows[index]->Cells[3]->Value->ToString();
+	String^ early_delivery_date = dataGridView1->Rows[index]->Cells[4]->Value->ToString();
+	String^ late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString();
+	bool delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
+
+	String^ connection_specs = "provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb";
+	OleDbConnection^ db_connection = gcnew OleDbConnection(connection_specs);
+
+	db_connection->Open();
+	String^ query = "INSERT INTO [Ð¢Ð¾Ð²Ð°Ñ€Ñ‹] VALUES (" + code + ",'" + title + "','" + category + "','" + transport + "',#" + early_delivery_date + "#,#" + late_delivery_date +"#," + delivered.ToString() + ")";
+	OleDbCommand^ db_comand = gcnew OleDbCommand(query, db_connection);
+
+	if (db_comand->ExecuteNonQuery() == 1)
+		MessageBox::Show("Ð”Ð°Ð½Ð½Ñ‹Ðµ ÑƒÑÐ¿ÐµÑˆÐ½Ð¾ Ð²Ð½ÐµÑÐµÐ½Ñ‹!", "Ð£ÑÐ¿ÐµÑ…");
+	else
+		MessageBox::Show("ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð²Ð½ÐµÑÑ‚Ð¸ Ð´Ð°Ð½Ð½Ñ‹Ðµ!", "ÐžÑˆÐ¸Ð±ÐºÐ°");
+	
+	db_connection->Close();
+
 	return System::Void();
 }
