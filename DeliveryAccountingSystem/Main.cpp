@@ -35,8 +35,16 @@ OleDbConnection^ CreateConnection(String^ path)
 System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	dataGridView1->Rows->Clear();
+	String^ db_path = textBox1->Text;
 
-	OleDbConnection^ db_connection = CreateConnection("C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb");
+	if (textBox1->Text == "" || !IO::File::Exists(db_path))
+	{
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		dataGridView1->Rows->Clear();
+		return;
+	}
+
+	OleDbConnection^ db_connection = CreateConnection(db_path);
 
 	db_connection->Open();
 	String^ query = "SELECT * FROM Товары";
@@ -61,6 +69,15 @@ System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ s
 
 System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	String^ db_path = textBox1->Text;
+
+	if (textBox1->Text == "" || !IO::File::Exists(db_path))
+	{
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		dataGridView1->Rows->Clear();
+		return;
+	}
+
 	if (dataGridView1->SelectedRows->Count != 1) {
 		MessageBox::Show("Строка не выбрана!", "Ошибка");
 		return;
@@ -83,7 +100,7 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 	record.late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
 	record.delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
 
-	OleDbConnection^ db_connection = CreateConnection("C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb");
+	OleDbConnection^ db_connection = CreateConnection(db_path);
 
 	db_connection->Open();
 	String^ query = "INSERT INTO Товары VALUES (" + record.code + ",'" + record.title + "','" + record.category + "','" + record.transport + "',#" + record.early_delivery_date + "#,#" + record.late_delivery_date +"#," + record.delivered.ToString() + ")";
@@ -101,6 +118,15 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 
 System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	String^ db_path = textBox1->Text;
+
+	if (textBox1->Text == "" || !IO::File::Exists(db_path))
+	{
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		dataGridView1->Rows->Clear();
+		return;
+	}
+
 	if (dataGridView1->SelectedRows->Count != 1) {
 		MessageBox::Show("Строка не выбрана!", "Ошибка");
 		return;
@@ -123,7 +149,7 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 	record.late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
 	record.delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
 
-	OleDbConnection^ db_connection = CreateConnection("C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb");
+	OleDbConnection^ db_connection = CreateConnection(db_path);
 
 	db_connection->Open();
 	String^ query = "UPDATE Товары SET Наименование='" + record.title + "', Категория='" + record.category + "', [Транспортное средство]='" + record.transport + "', [Ранняя дата доставки]=#" + record.early_delivery_date + "#, [Поздняя дата доставки]=#" + record.late_delivery_date + "#, Доставлен=" + record.delivered + " WHERE Код= " + record.code;
@@ -143,6 +169,15 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 
 System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	String^ db_path = textBox1->Text;
+
+	if (textBox1->Text == "" || !IO::File::Exists(db_path))
+	{
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		dataGridView1->Rows->Clear();
+		return;
+	}
+
 	if (dataGridView1->SelectedRows->Count != 1) {
 		MessageBox::Show("Строка не выбрана!", "Ошибка");
 		return;
@@ -158,7 +193,7 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 
 	int code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
 
-	OleDbConnection^ db_connection = CreateConnection("C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb");
+	OleDbConnection^ db_connection = CreateConnection(db_path);
 
 	db_connection->Open();
 	String^ query = "DELETE FROM Товары WHERE Код= " + code.ToString();

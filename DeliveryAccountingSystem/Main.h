@@ -48,6 +48,9 @@ namespace DeliveryAccountingSystem {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ EarlyDeliveryDate;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ LateDeliveryDate;
 	private: System::Windows::Forms::DataGridViewCheckBoxColumn^ Delivered;
+	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::Label^ label_db_path;
+
 
 
 
@@ -93,6 +96,8 @@ namespace DeliveryAccountingSystem {
 			this->button_add = (gcnew System::Windows::Forms::Button());
 			this->button_edit = (gcnew System::Windows::Forms::Button());
 			this->button_load = (gcnew System::Windows::Forms::Button());
+			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->label_db_path = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->group_operations->SuspendLayout();
 			this->SuspendLayout();
@@ -104,7 +109,7 @@ namespace DeliveryAccountingSystem {
 				this->Code, this->Title,
 					this->Category, this->Transport, this->EarlyDeliveryDate, this->LateDeliveryDate, this->Delivered
 			});
-			this->dataGridView1->Location = System::Drawing::Point(12, 21);
+			this->dataGridView1->Location = System::Drawing::Point(24, 104);
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->Size = System::Drawing::Size(743, 274);
 			this->dataGridView1->TabIndex = 0;
@@ -150,7 +155,9 @@ namespace DeliveryAccountingSystem {
 			this->group_operations->Controls->Add(this->button_add);
 			this->group_operations->Controls->Add(this->button_edit);
 			this->group_operations->Controls->Add(this->button_load);
-			this->group_operations->Location = System::Drawing::Point(785, 21);
+			this->group_operations->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			this->group_operations->Location = System::Drawing::Point(797, 104);
 			this->group_operations->Name = L"group_operations";
 			this->group_operations->Size = System::Drawing::Size(200, 274);
 			this->group_operations->TabIndex = 1;
@@ -197,22 +204,41 @@ namespace DeliveryAccountingSystem {
 			this->button_load->UseVisualStyleBackColor = true;
 			this->button_load->Click += gcnew System::EventHandler(this, &Main::button_load_Click);
 			// 
+			// textBox1
+			// 
+			this->textBox1->Location = System::Drawing::Point(110, 26);
+			this->textBox1->Name = L"textBox1";
+			this->textBox1->Size = System::Drawing::Size(247, 20);
+			this->textBox1->TabIndex = 2;
+			// 
+			// label_db_path
+			// 
+			this->label_db_path->AutoSize = true;
+			this->label_db_path->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label_db_path->Location = System::Drawing::Point(21, 25);
+			this->label_db_path->Name = L"label_db_path";
+			this->label_db_path->Size = System::Drawing::Size(83, 18);
+			this->label_db_path->TabIndex = 3;
+			this->label_db_path->Text = L"Путь к БД:";
+			// 
 			// Main
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1013, 311);
+			this->ClientSize = System::Drawing::Size(1013, 400);
+			this->Controls->Add(this->label_db_path);
+			this->Controls->Add(this->textBox1);
 			this->Controls->Add(this->group_operations);
 			this->Controls->Add(this->dataGridView1);
 			this->MaximizeBox = false;
-			this->MaximumSize = System::Drawing::Size(1029, 350);
-			this->MinimumSize = System::Drawing::Size(1029, 350);
 			this->Name = L"Main";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Информационно-справочная система учета доставки грузов";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			this->group_operations->ResumeLayout(false);
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
