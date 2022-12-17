@@ -140,3 +140,41 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 
 	return System::Void();
 }
+
+System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	if (dataGridView1->SelectedRows->Count != 1) {
+		MessageBox::Show("Строка не выбрана!", "Ошибка");
+		return;
+	}
+
+	int index = dataGridView1->SelectedRows[0]->Index;
+
+	if (dataGridView1->Rows[index]->Cells[0]->Value == nullptr)
+	{
+		MessageBox::Show("Код недоступен!", "Ошибка");
+		return;
+	}
+
+	int code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
+
+	OleDbConnection^ db_connection = CreateConnection("C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb");
+
+	db_connection->Open();
+	String^ query = "DELETE FROM Товары WHERE Код= " + code.ToString();
+	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
+
+	if (db_command->ExecuteNonQuery() == 1)
+	{
+		dataGridView1->Rows->RemoveAt(index);
+		MessageBox::Show("Запись успешно удалена!", "Успех");
+	}
+	else {
+		MessageBox::Show("Не удалось удалить запись!", "Ошибка");
+		dataGridView1->Rows->RemoveAt(index);
+	}
+
+	db_connection->Close();
+
+	return System::Void();
+}

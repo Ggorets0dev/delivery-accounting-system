@@ -81,11 +81,6 @@ namespace DeliveryAccountingSystem {
 		void InitializeComponent(void)
 		{
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			this->group_operations = (gcnew System::Windows::Forms::GroupBox());
-			this->button_delete = (gcnew System::Windows::Forms::Button());
-			this->button_add = (gcnew System::Windows::Forms::Button());
-			this->button_edit = (gcnew System::Windows::Forms::Button());
-			this->button_load = (gcnew System::Windows::Forms::Button());
 			this->Code = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Title = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Category = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -93,6 +88,11 @@ namespace DeliveryAccountingSystem {
 			this->EarlyDeliveryDate = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->LateDeliveryDate = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Delivered = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
+			this->group_operations = (gcnew System::Windows::Forms::GroupBox());
+			this->button_delete = (gcnew System::Windows::Forms::Button());
+			this->button_add = (gcnew System::Windows::Forms::Button());
+			this->button_edit = (gcnew System::Windows::Forms::Button());
+			this->button_load = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->group_operations->SuspendLayout();
 			this->SuspendLayout();
@@ -108,6 +108,41 @@ namespace DeliveryAccountingSystem {
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->Size = System::Drawing::Size(743, 274);
 			this->dataGridView1->TabIndex = 0;
+			// 
+			// Code
+			// 
+			this->Code->HeaderText = L"Код";
+			this->Code->Name = L"Code";
+			// 
+			// Title
+			// 
+			this->Title->HeaderText = L"Наименование";
+			this->Title->Name = L"Title";
+			// 
+			// Category
+			// 
+			this->Category->HeaderText = L"Категория";
+			this->Category->Name = L"Category";
+			// 
+			// Transport
+			// 
+			this->Transport->HeaderText = L"Транспортное средство";
+			this->Transport->Name = L"Transport";
+			// 
+			// EarlyDeliveryDate
+			// 
+			this->EarlyDeliveryDate->HeaderText = L"Ранняя дата доставки";
+			this->EarlyDeliveryDate->Name = L"EarlyDeliveryDate";
+			// 
+			// LateDeliveryDate
+			// 
+			this->LateDeliveryDate->HeaderText = L"Поздняя дата доставки";
+			this->LateDeliveryDate->Name = L"LateDeliveryDate";
+			// 
+			// Delivered
+			// 
+			this->Delivered->HeaderText = L"Доставлен";
+			this->Delivered->Name = L"Delivered";
 			// 
 			// group_operations
 			// 
@@ -162,41 +197,6 @@ namespace DeliveryAccountingSystem {
 			this->button_load->UseVisualStyleBackColor = true;
 			this->button_load->Click += gcnew System::EventHandler(this, &Main::button_load_Click);
 			// 
-			// Code
-			// 
-			this->Code->HeaderText = L"Код";
-			this->Code->Name = L"Code";
-			// 
-			// Title
-			// 
-			this->Title->HeaderText = L"Наименование";
-			this->Title->Name = L"Title";
-			// 
-			// Category
-			// 
-			this->Category->HeaderText = L"Категория";
-			this->Category->Name = L"Category";
-			// 
-			// Transport
-			// 
-			this->Transport->HeaderText = L"Транспортное средство";
-			this->Transport->Name = L"Transport";
-			// 
-			// EarlyDeliveryDate
-			// 
-			this->EarlyDeliveryDate->HeaderText = L"Ранняя дата доставки";
-			this->EarlyDeliveryDate->Name = L"EarlyDeliveryDate";
-			// 
-			// LateDeliveryDate
-			// 
-			this->LateDeliveryDate->HeaderText = L"Поздняя дата доставки";
-			this->LateDeliveryDate->Name = L"LateDeliveryDate";
-			// 
-			// Delivered
-			// 
-			this->Delivered->HeaderText = L"Доставлен";
-			this->Delivered->Name = L"Delivered";
-			// 
 			// Main
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -218,7 +218,7 @@ namespace DeliveryAccountingSystem {
 #pragma endregion
 	private: System::Void button_load_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void button_add_Click(System::Object^ sender, System::EventArgs^ e);
-	private: System::Void button_delete_Click(System::Object^ sender, System::EventArgs^ e) {};
+	private: System::Void button_delete_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void button_edit_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
