@@ -127,6 +127,7 @@
     <ClInclude Include="Main.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Models.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Main.resx">

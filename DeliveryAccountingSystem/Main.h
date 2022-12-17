@@ -219,7 +219,7 @@ namespace DeliveryAccountingSystem {
 	private: System::Void button_load_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void button_add_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void button_delete_Click(System::Object^ sender, System::EventArgs^ e) {};
-	private: System::Void button_edit_Click(System::Object^ sender, System::EventArgs^ e) {};
+	private: System::Void button_edit_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
 

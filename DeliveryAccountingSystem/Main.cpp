@@ -1,4 +1,5 @@
 ﻿#include "Main.h"
+#include "Models.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -14,15 +15,31 @@ int main(array<String^>^ arg)
 	Application::Run(% main_form);
 }
 
+bool AreFieldsFilled(DataGridView^ grid_view, int index)
+{
+	return grid_view->Rows[index]->Cells[0]->Value != nullptr &&
+		grid_view->Rows[index]->Cells[1]->Value != nullptr &&
+		grid_view->Rows[index]->Cells[2]->Value != nullptr &&
+		grid_view->Rows[index]->Cells[3]->Value != nullptr &&
+		grid_view->Rows[index]->Cells[4]->Value != nullptr &&
+		grid_view->Rows[index]->Cells[5]->Value != nullptr;
+}
+
+OleDbConnection^ CreateConnection(String^ path)
+{
+	String^ connection_specs = "provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path;
+	OleDbConnection^ db_connection = gcnew OleDbConnection(connection_specs);
+	return db_connection;
+}
+
 System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	dataGridView1->Rows->Clear();
 
-	String^ connection_specs = "provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb";
-	OleDbConnection^ db_connection = gcnew OleDbConnection(connection_specs);
+	OleDbConnection^ db_connection = CreateConnection("C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb");
 
 	db_connection->Open();
-	String^ query = "SELECT * FROM [Товары]";
+	String^ query = "SELECT * FROM Товары";
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 	OleDbDataReader^ db_reader = db_command->ExecuteReader();
 
@@ -51,37 +68,75 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 
 	int index = dataGridView1->SelectedRows[0]->Index;
 
-	if (dataGridView1->Rows[index]->Cells[0]->Value == nullptr ||
-		dataGridView1->Rows[index]->Cells[1]->Value == nullptr ||
-		dataGridView1->Rows[index]->Cells[2]->Value == nullptr ||
-		dataGridView1->Rows[index]->Cells[3]->Value == nullptr ||
-		dataGridView1->Rows[index]->Cells[4]->Value == nullptr ||
-		dataGridView1->Rows[index]->Cells[5]->Value == nullptr) {
+	if (!AreFieldsFilled(dataGridView1, index)) {
 		MessageBox::Show("Не все данные были введены!", "Ошибка");
 		return;
 	}
 
-	Int32 code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
-	String^ title = dataGridView1->Rows[index]->Cells[1]->Value->ToString();
-	String^ category = dataGridView1->Rows[index]->Cells[2]->Value->ToString();
-	String^ transport = dataGridView1->Rows[index]->Cells[3]->Value->ToString();
-	String^ early_delivery_date = dataGridView1->Rows[index]->Cells[4]->Value->ToString();
-	String^ late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString();
-	bool delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
+	Record record;
 
-	String^ connection_specs = "provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb";
-	OleDbConnection^ db_connection = gcnew OleDbConnection(connection_specs);
+	record.code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
+	record.title = dataGridView1->Rows[index]->Cells[1]->Value->ToString();
+	record.category = dataGridView1->Rows[index]->Cells[2]->Value->ToString();
+	record.transport = dataGridView1->Rows[index]->Cells[3]->Value->ToString();
+	record.early_delivery_date = dataGridView1->Rows[index]->Cells[4]->Value->ToString()->Replace(".", "-");
+	record.late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
+	record.delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
+
+	OleDbConnection^ db_connection = CreateConnection("C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb");
 
 	db_connection->Open();
-	String^ query = "INSERT INTO [Товары] VALUES (" + code + ",'" + title + "','" + category + "','" + transport + "',#" + early_delivery_date + "#,#" + late_delivery_date +"#," + delivered.ToString() + ")";
-	OleDbCommand^ db_comand = gcnew OleDbCommand(query, db_connection);
+	String^ query = "INSERT INTO Товары VALUES (" + record.code + ",'" + record.title + "','" + record.category + "','" + record.transport + "',#" + record.early_delivery_date + "#,#" + record.late_delivery_date +"#," + record.delivered.ToString() + ")";
+	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 
-	if (db_comand->ExecuteNonQuery() == 1)
+	if (db_command->ExecuteNonQuery() == 1)
 		MessageBox::Show("Данные успешно внесены!", "Успех");
 	else
 		MessageBox::Show("Не удалось внести данные!", "Ошибка");
 	
 	db_connection->Close();
+
+	return System::Void();
+}
+
+System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	if (dataGridView1->SelectedRows->Count != 1) {
+		MessageBox::Show("Строка не выбрана!", "Ошибка");
+		return;
+	}
+
+	int index = dataGridView1->SelectedRows[0]->Index;
+
+	if (!AreFieldsFilled(dataGridView1, index)) {
+		MessageBox::Show("Не все данные были введены!", "Ошибка");
+		return;
+	}
+
+	Record record;
+
+	record.code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
+	record.title = dataGridView1->Rows[index]->Cells[1]->Value->ToString();
+	record.category = dataGridView1->Rows[index]->Cells[2]->Value->ToString();
+	record.transport = dataGridView1->Rows[index]->Cells[3]->Value->ToString();
+	record.early_delivery_date = dataGridView1->Rows[index]->Cells[4]->Value->ToString()->Replace(".", "-");
+	record.late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
+	record.delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
+
+	OleDbConnection^ db_connection = CreateConnection("C:\\Users\\gores\\Desktop\\lera_data\\DeliveryAccounting.mdb");
+
+	db_connection->Open();
+	String^ query = "UPDATE Товары SET Наименование='" + record.title + "', Категория='" + record.category + "', [Транспортное средство]='" + record.transport + "', [Ранняя дата доставки]=#" + record.early_delivery_date + "#, [Поздняя дата доставки]=#" + record.late_delivery_date + "#, Доставлен=" + record.delivered + " WHERE Код= " + record.code;
+	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
+
+	if (db_command->ExecuteNonQuery() == 1)
+		MessageBox::Show("Данные успешно внесены!", "Успех");
+	else
+		MessageBox::Show("Не удалось внести данные!", "Ошибка");
+
+	db_connection->Close();
+
+	return System::Void();
 
 	return System::Void();
 }
