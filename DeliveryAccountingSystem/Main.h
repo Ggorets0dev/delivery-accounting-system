@@ -41,6 +41,25 @@ namespace DeliveryAccountingSystem {
 	private: System::Windows::Forms::Button^ button_add;
 	private: System::Windows::Forms::Button^ button_edit;
 	private: System::Windows::Forms::Button^ button_delete;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Code;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Title;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Category;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ Transport;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ EarlyDeliveryDate;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^ LateDeliveryDate;
+	private: System::Windows::Forms::DataGridViewCheckBoxColumn^ Delivered;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -67,6 +86,13 @@ namespace DeliveryAccountingSystem {
 			this->button_add = (gcnew System::Windows::Forms::Button());
 			this->button_edit = (gcnew System::Windows::Forms::Button());
 			this->button_load = (gcnew System::Windows::Forms::Button());
+			this->Code = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Title = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Category = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Transport = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->EarlyDeliveryDate = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->LateDeliveryDate = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Delivered = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->group_operations->SuspendLayout();
 			this->SuspendLayout();
@@ -74,9 +100,13 @@ namespace DeliveryAccountingSystem {
 			// dataGridView1
 			// 
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(7) {
+				this->Code, this->Title,
+					this->Category, this->Transport, this->EarlyDeliveryDate, this->LateDeliveryDate, this->Delivered
+			});
 			this->dataGridView1->Location = System::Drawing::Point(12, 21);
 			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->Size = System::Drawing::Size(573, 407);
+			this->dataGridView1->Size = System::Drawing::Size(743, 274);
 			this->dataGridView1->TabIndex = 0;
 			// 
 			// group_operations
@@ -85,13 +115,12 @@ namespace DeliveryAccountingSystem {
 			this->group_operations->Controls->Add(this->button_add);
 			this->group_operations->Controls->Add(this->button_edit);
 			this->group_operations->Controls->Add(this->button_load);
-			this->group_operations->Location = System::Drawing::Point(606, 21);
+			this->group_operations->Location = System::Drawing::Point(785, 21);
 			this->group_operations->Name = L"group_operations";
-			this->group_operations->Size = System::Drawing::Size(200, 278);
+			this->group_operations->Size = System::Drawing::Size(200, 274);
 			this->group_operations->TabIndex = 1;
 			this->group_operations->TabStop = false;
 			this->group_operations->Text = L"Операции";
-			this->group_operations->Enter += gcnew System::EventHandler(this, &Main::group_operations_Enter);
 			// 
 			// button_delete
 			// 
@@ -133,14 +162,53 @@ namespace DeliveryAccountingSystem {
 			this->button_load->UseVisualStyleBackColor = true;
 			this->button_load->Click += gcnew System::EventHandler(this, &Main::button_load_Click);
 			// 
+			// Code
+			// 
+			this->Code->HeaderText = L"Код";
+			this->Code->Name = L"Code";
+			// 
+			// Title
+			// 
+			this->Title->HeaderText = L"Наименование";
+			this->Title->Name = L"Title";
+			// 
+			// Category
+			// 
+			this->Category->HeaderText = L"Категория";
+			this->Category->Name = L"Category";
+			// 
+			// Transport
+			// 
+			this->Transport->HeaderText = L"Транспортное средство";
+			this->Transport->Name = L"Transport";
+			// 
+			// EarlyDeliveryDate
+			// 
+			this->EarlyDeliveryDate->HeaderText = L"Ранняя дата доставки";
+			this->EarlyDeliveryDate->Name = L"EarlyDeliveryDate";
+			// 
+			// LateDeliveryDate
+			// 
+			this->LateDeliveryDate->HeaderText = L"Поздняя дата доставки";
+			this->LateDeliveryDate->Name = L"LateDeliveryDate";
+			// 
+			// Delivered
+			// 
+			this->Delivered->HeaderText = L"Доставлен";
+			this->Delivered->Name = L"Delivered";
+			// 
 			// Main
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(830, 440);
+			this->ClientSize = System::Drawing::Size(1013, 311);
 			this->Controls->Add(this->group_operations);
 			this->Controls->Add(this->dataGridView1);
+			this->MaximizeBox = false;
+			this->MaximumSize = System::Drawing::Size(1029, 350);
+			this->MinimumSize = System::Drawing::Size(1029, 350);
 			this->Name = L"Main";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Информационно-справочная система учета доставки грузов";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			this->group_operations->ResumeLayout(false);
@@ -148,15 +216,10 @@ namespace DeliveryAccountingSystem {
 
 		}
 #pragma endregion
-	private: System::Void group_operations_Enter(System::Object^ sender, System::EventArgs^ e) {
-	}
-	private: System::Void button_load_Click(System::Object^ sender, System::EventArgs^ e) {
-	}
-	private: System::Void button_add_Click(System::Object^ sender, System::EventArgs^ e) {
-	}
-private: System::Void button_delete_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void button_edit_Click(System::Object^ sender, System::EventArgs^ e) {
-}
+	private: System::Void button_load_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void button_add_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void button_delete_Click(System::Object^ sender, System::EventArgs^ e) {};
+	private: System::Void button_edit_Click(System::Object^ sender, System::EventArgs^ e) {};
 };
 }
+
