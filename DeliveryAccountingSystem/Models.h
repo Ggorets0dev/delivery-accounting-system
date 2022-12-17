@@ -1,5 +1,7 @@
 #pragma once
 
+using namespace System;
+
 public value struct Record
 {
 	int code;
