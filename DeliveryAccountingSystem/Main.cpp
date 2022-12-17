@@ -76,14 +76,14 @@ bool findInDb(String^ db_path, String^ search, String^ column, DataGridView^ gri
 
 System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	dataGridView1->Rows->Clear();
+	dataGridView_Database->Rows->Clear();
 
 	String^ db_path = textBox_db_path->Text;
 
 	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
 		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
-		dataGridView1->Rows->Clear();
+		dataGridView_Database->Rows->Clear();
 		return;
 	}
 
@@ -97,7 +97,7 @@ System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ s
 	if (db_reader->HasRows)
 	{
 		while (db_reader->Read())
-			dataGridView1->Rows->Add(db_reader["Код"], db_reader["Наименование"], db_reader["Категория"], db_reader["Транспортное средство"], db_reader["Ранняя дата доставки"], db_reader["Поздняя дата доставки"], db_reader["Доставлен"]);
+			dataGridView_Database->Rows->Add(db_reader["Код"], db_reader["Наименование"], db_reader["Категория"], db_reader["Транспортное средство"], db_reader["Ранняя дата доставки"], db_reader["Поздняя дата доставки"], db_reader["Доставлен"]);
 	}
 	else
 	{
@@ -117,31 +117,33 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
 		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
-		dataGridView1->Rows->Clear();
+		dataGridView_Database->Rows->Clear();
 		return;
 	}
 
-	if (dataGridView1->SelectedRows->Count != 1) {
+	if (dataGridView_Database->SelectedRows->Count != 1) 
+	{
 		MessageBox::Show("Строка не выбрана!", "Ошибка");
 		return;
 	}
 
-	int index = dataGridView1->SelectedRows[0]->Index;
+	int index = dataGridView_Database->SelectedRows[0]->Index;
 
-	if (!areFieldsFilled(dataGridView1, index)) {
+	if (!areFieldsFilled(dataGridView_Database, index)) 
+	{
 		MessageBox::Show("Не все данные были введены!", "Ошибка");
 		return;
 	}
 
 	Record record;
 
-	record.code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
-	record.title = dataGridView1->Rows[index]->Cells[1]->Value->ToString();
-	record.category = dataGridView1->Rows[index]->Cells[2]->Value->ToString();
-	record.transport = dataGridView1->Rows[index]->Cells[3]->Value->ToString();
-	record.early_delivery_date = dataGridView1->Rows[index]->Cells[4]->Value->ToString()->Replace(".", "-");
-	record.late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
-	record.delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
+	record.code = Int32::Parse(dataGridView_Database->Rows[index]->Cells[0]->Value->ToString());
+	record.title = dataGridView_Database->Rows[index]->Cells[1]->Value->ToString();
+	record.category = dataGridView_Database->Rows[index]->Cells[2]->Value->ToString();
+	record.transport = dataGridView_Database->Rows[index]->Cells[3]->Value->ToString();
+	record.early_delivery_date = dataGridView_Database->Rows[index]->Cells[4]->Value->ToString()->Replace(".", "-");
+	record.late_delivery_date = dataGridView_Database->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
+	record.delivered = dataGridView_Database->Rows[index]->Cells[6]->Value != nullptr;
 
 	OleDbConnection^ db_connection = createConnection(db_path);
 
@@ -166,31 +168,33 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
 		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
-		dataGridView1->Rows->Clear();
+		dataGridView_Database->Rows->Clear();
 		return;
 	}
 
-	if (dataGridView1->SelectedRows->Count != 1) {
+	if (dataGridView_Database->SelectedRows->Count != 1) 
+	{
 		MessageBox::Show("Строка не выбрана!", "Ошибка");
 		return;
 	}
 
-	int index = dataGridView1->SelectedRows[0]->Index;
+	int index = dataGridView_Database->SelectedRows[0]->Index;
 
-	if (!areFieldsFilled(dataGridView1, index)) {
+	if (!areFieldsFilled(dataGridView_Database, index)) 
+	{
 		MessageBox::Show("Не все данные были введены!", "Ошибка");
 		return;
 	}
 
 	Record record;
 
-	record.code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
-	record.title = dataGridView1->Rows[index]->Cells[1]->Value->ToString();
-	record.category = dataGridView1->Rows[index]->Cells[2]->Value->ToString();
-	record.transport = dataGridView1->Rows[index]->Cells[3]->Value->ToString();
-	record.early_delivery_date = dataGridView1->Rows[index]->Cells[4]->Value->ToString()->Replace(".", "-");
-	record.late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
-	record.delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
+	record.code = Int32::Parse(dataGridView_Database->Rows[index]->Cells[0]->Value->ToString());
+	record.title = dataGridView_Database->Rows[index]->Cells[1]->Value->ToString();
+	record.category = dataGridView_Database->Rows[index]->Cells[2]->Value->ToString();
+	record.transport = dataGridView_Database->Rows[index]->Cells[3]->Value->ToString();
+	record.early_delivery_date = dataGridView_Database->Rows[index]->Cells[4]->Value->ToString()->Replace(".", "-");
+	record.late_delivery_date = dataGridView_Database->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
+	record.delivered = dataGridView_Database->Rows[index]->Cells[6]->Value != nullptr;
 
 	OleDbConnection^ db_connection = createConnection(db_path);
 
@@ -206,8 +210,6 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 	db_connection->Close();
 
 	return System::Void();
-
-	return System::Void();
 }
 
 System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^ sender, System::EventArgs^ e)
@@ -217,24 +219,25 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
 		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
-		dataGridView1->Rows->Clear();
+		dataGridView_Database->Rows->Clear();
 		return;
 	}
 
-	if (dataGridView1->SelectedRows->Count != 1) {
+	if (dataGridView_Database->SelectedRows->Count != 1) 
+	{
 		MessageBox::Show("Строка не выбрана!", "Ошибка");
 		return;
 	}
 
-	int index = dataGridView1->SelectedRows[0]->Index;
+	int index = dataGridView_Database->SelectedRows[0]->Index;
 
-	if (dataGridView1->Rows[index]->Cells[0]->Value == nullptr)
+	if (dataGridView_Database->Rows[index]->Cells[0]->Value == nullptr)
 	{
 		MessageBox::Show("Код недоступен!", "Ошибка");
 		return;
 	}
 
-	int code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
+	int code = Int32::Parse(dataGridView_Database->Rows[index]->Cells[0]->Value->ToString());
 
 	OleDbConnection^ db_connection = createConnection(db_path);
 
@@ -244,12 +247,13 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 
 	if (db_command->ExecuteNonQuery() == 1)
 	{
-		dataGridView1->Rows->RemoveAt(index);
+		dataGridView_Database->Rows->RemoveAt(index);
 		MessageBox::Show("Запись успешно удалена!", "Успех");
 	}
-	else {
+	else 
+	{
 		MessageBox::Show("Не удалось удалить запись!", "Ошибка");
-		dataGridView1->Rows->RemoveAt(index);
+		dataGridView_Database->Rows->RemoveAt(index);
 	}
 
 	db_connection->Close();
@@ -259,9 +263,9 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 
 System::Void DeliveryAccountingSystem::Main::button_find_transport_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	dataGridView1->Rows->Clear();
+	dataGridView_Database->Rows->Clear();
 	
-	if (findInDb(textBox_db_path->Text, textBox_transport_search->Text, "Транспортное средство", dataGridView1))
+	if (findInDb(textBox_db_path->Text, textBox_transport_search->Text, "Транспортное средство", dataGridView_Database))
 		MessageBox::Show("Запрос выполнен!", "Успех");
 	else
 		MessageBox::Show("Не удалось найти данные!", "Ошибка");
@@ -271,9 +275,9 @@ System::Void DeliveryAccountingSystem::Main::button_find_transport_Click(System:
 
 System::Void DeliveryAccountingSystem::Main::button_find_category_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	dataGridView1->Rows->Clear();
+	dataGridView_Database->Rows->Clear();
 
-	if (findInDb(textBox_db_path->Text, textBox_category_search->Text, "Категория", dataGridView1))
+	if (findInDb(textBox_db_path->Text, textBox_category_search->Text, "Категория", dataGridView_Database))
 		MessageBox::Show("Запрос выполнен!", "Успех");
 	else
 		MessageBox::Show("Не удалось найти данные!", "Ошибка");

@@ -34,7 +34,11 @@ namespace DeliveryAccountingSystem {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::DataGridView^ dataGridView1;
+	private: System::Windows::Forms::DataGridView^ dataGridView_Database;
+	protected:
+
+	protected:
+
 	private: System::Windows::Forms::GroupBox^ group_operations;
 
 	private: System::Windows::Forms::Button^ button_load;
@@ -94,7 +98,7 @@ namespace DeliveryAccountingSystem {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			this->dataGridView_Database = (gcnew System::Windows::Forms::DataGridView());
 			this->Code = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Title = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Category = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -115,21 +119,21 @@ namespace DeliveryAccountingSystem {
 			this->textBox_category_search = (gcnew System::Windows::Forms::TextBox());
 			this->button_find_transport = (gcnew System::Windows::Forms::Button());
 			this->button_find_category = (gcnew System::Windows::Forms::Button());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Database))->BeginInit();
 			this->group_operations->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// dataGridView1
+			// dataGridView_Database
 			// 
-			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(7) {
-				this->Code, this->Title,
-					this->Category, this->Transport, this->EarlyDeliveryDate, this->LateDeliveryDate, this->Delivered
+			this->dataGridView_Database->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView_Database->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(7) {
+				this->Code,
+					this->Title, this->Category, this->Transport, this->EarlyDeliveryDate, this->LateDeliveryDate, this->Delivered
 			});
-			this->dataGridView1->Location = System::Drawing::Point(24, 155);
-			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->Size = System::Drawing::Size(743, 313);
-			this->dataGridView1->TabIndex = 0;
+			this->dataGridView_Database->Location = System::Drawing::Point(24, 155);
+			this->dataGridView_Database->Name = L"dataGridView_Database";
+			this->dataGridView_Database->Size = System::Drawing::Size(743, 313);
+			this->dataGridView_Database->TabIndex = 0;
 			// 
 			// Code
 			// 
@@ -309,14 +313,14 @@ namespace DeliveryAccountingSystem {
 			this->Controls->Add(this->label_db_path);
 			this->Controls->Add(this->textBox_db_path);
 			this->Controls->Add(this->group_operations);
-			this->Controls->Add(this->dataGridView1);
+			this->Controls->Add(this->dataGridView_Database);
 			this->MaximizeBox = false;
 			this->MaximumSize = System::Drawing::Size(1029, 525);
 			this->MinimumSize = System::Drawing::Size(1029, 525);
 			this->Name = L"Main";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Информационно-справочная система учета доставки грузов";
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Database))->EndInit();
 			this->group_operations->ResumeLayout(false);
 			this->ResumeLayout(false);
 			this->PerformLayout();
