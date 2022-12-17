@@ -48,8 +48,19 @@ namespace DeliveryAccountingSystem {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ EarlyDeliveryDate;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ LateDeliveryDate;
 	private: System::Windows::Forms::DataGridViewCheckBoxColumn^ Delivered;
-	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::TextBox^ textBox_db_path;
+
 	private: System::Windows::Forms::Label^ label_db_path;
+	private: System::Windows::Forms::Label^ label1;
+	private: System::Windows::Forms::TextBox^ textBox_transport_search;
+
+	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::TextBox^ textBox_category_search;
+
+	private: System::Windows::Forms::Button^ button_find_transport;
+	private: System::Windows::Forms::Button^ button_find_category;
+
+
 
 
 
@@ -96,8 +107,14 @@ namespace DeliveryAccountingSystem {
 			this->button_add = (gcnew System::Windows::Forms::Button());
 			this->button_edit = (gcnew System::Windows::Forms::Button());
 			this->button_load = (gcnew System::Windows::Forms::Button());
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_db_path = (gcnew System::Windows::Forms::TextBox());
 			this->label_db_path = (gcnew System::Windows::Forms::Label());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->textBox_transport_search = (gcnew System::Windows::Forms::TextBox());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->textBox_category_search = (gcnew System::Windows::Forms::TextBox());
+			this->button_find_transport = (gcnew System::Windows::Forms::Button());
+			this->button_find_category = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->group_operations->SuspendLayout();
 			this->SuspendLayout();
@@ -109,9 +126,9 @@ namespace DeliveryAccountingSystem {
 				this->Code, this->Title,
 					this->Category, this->Transport, this->EarlyDeliveryDate, this->LateDeliveryDate, this->Delivered
 			});
-			this->dataGridView1->Location = System::Drawing::Point(24, 104);
+			this->dataGridView1->Location = System::Drawing::Point(24, 155);
 			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->Size = System::Drawing::Size(743, 274);
+			this->dataGridView1->Size = System::Drawing::Size(743, 313);
 			this->dataGridView1->TabIndex = 0;
 			// 
 			// Code
@@ -157,16 +174,16 @@ namespace DeliveryAccountingSystem {
 			this->group_operations->Controls->Add(this->button_load);
 			this->group_operations->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
-			this->group_operations->Location = System::Drawing::Point(797, 104);
+			this->group_operations->Location = System::Drawing::Point(801, 155);
 			this->group_operations->Name = L"group_operations";
-			this->group_operations->Size = System::Drawing::Size(200, 274);
+			this->group_operations->Size = System::Drawing::Size(200, 313);
 			this->group_operations->TabIndex = 1;
 			this->group_operations->TabStop = false;
 			this->group_operations->Text = L"Операции";
 			// 
 			// button_delete
 			// 
-			this->button_delete->Location = System::Drawing::Point(37, 209);
+			this->button_delete->Location = System::Drawing::Point(37, 243);
 			this->button_delete->Name = L"button_delete";
 			this->button_delete->Size = System::Drawing::Size(123, 43);
 			this->button_delete->TabIndex = 3;
@@ -176,7 +193,7 @@ namespace DeliveryAccountingSystem {
 			// 
 			// button_add
 			// 
-			this->button_add->Location = System::Drawing::Point(37, 92);
+			this->button_add->Location = System::Drawing::Point(37, 98);
 			this->button_add->Name = L"button_add";
 			this->button_add->Size = System::Drawing::Size(123, 43);
 			this->button_add->TabIndex = 1;
@@ -186,7 +203,7 @@ namespace DeliveryAccountingSystem {
 			// 
 			// button_edit
 			// 
-			this->button_edit->Location = System::Drawing::Point(37, 151);
+			this->button_edit->Location = System::Drawing::Point(37, 172);
 			this->button_edit->Name = L"button_edit";
 			this->button_edit->Size = System::Drawing::Size(123, 43);
 			this->button_edit->TabIndex = 2;
@@ -204,12 +221,12 @@ namespace DeliveryAccountingSystem {
 			this->button_load->UseVisualStyleBackColor = true;
 			this->button_load->Click += gcnew System::EventHandler(this, &Main::button_load_Click);
 			// 
-			// textBox1
+			// textBox_db_path
 			// 
-			this->textBox1->Location = System::Drawing::Point(110, 26);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(247, 20);
-			this->textBox1->TabIndex = 2;
+			this->textBox_db_path->Location = System::Drawing::Point(110, 25);
+			this->textBox_db_path->Name = L"textBox_db_path";
+			this->textBox_db_path->Size = System::Drawing::Size(294, 20);
+			this->textBox_db_path->TabIndex = 2;
 			// 
 			// label_db_path
 			// 
@@ -222,16 +239,80 @@ namespace DeliveryAccountingSystem {
 			this->label_db_path->TabIndex = 3;
 			this->label_db_path->Text = L"Путь к БД:";
 			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label1->Location = System::Drawing::Point(21, 72);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(254, 18);
+			this->label1->TabIndex = 4;
+			this->label1->Text = L"Поиск по транспортному средству:";
+			// 
+			// textBox_transport_search
+			// 
+			this->textBox_transport_search->Location = System::Drawing::Point(281, 72);
+			this->textBox_transport_search->Name = L"textBox_transport_search";
+			this->textBox_transport_search->Size = System::Drawing::Size(123, 20);
+			this->textBox_transport_search->TabIndex = 5;
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label2->Location = System::Drawing::Point(21, 104);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(151, 18);
+			this->label2->TabIndex = 6;
+			this->label2->Text = L"Поиск по категории:";
+			// 
+			// textBox_category_search
+			// 
+			this->textBox_category_search->Location = System::Drawing::Point(178, 105);
+			this->textBox_category_search->Name = L"textBox_category_search";
+			this->textBox_category_search->Size = System::Drawing::Size(123, 20);
+			this->textBox_category_search->TabIndex = 7;
+			// 
+			// button_find_transport
+			// 
+			this->button_find_transport->Location = System::Drawing::Point(410, 72);
+			this->button_find_transport->Name = L"button_find_transport";
+			this->button_find_transport->Size = System::Drawing::Size(77, 20);
+			this->button_find_transport->TabIndex = 4;
+			this->button_find_transport->Text = L"Найти";
+			this->button_find_transport->UseVisualStyleBackColor = true;
+			this->button_find_transport->Click += gcnew System::EventHandler(this, &Main::button_find_transport_Click);
+			// 
+			// button_find_category
+			// 
+			this->button_find_category->Location = System::Drawing::Point(307, 105);
+			this->button_find_category->Name = L"button_find_category";
+			this->button_find_category->Size = System::Drawing::Size(77, 20);
+			this->button_find_category->TabIndex = 8;
+			this->button_find_category->Text = L"Найти";
+			this->button_find_category->UseVisualStyleBackColor = true;
+			this->button_find_category->Click += gcnew System::EventHandler(this, &Main::button_find_category_Click);
+			// 
 			// Main
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1013, 400);
+			this->ClientSize = System::Drawing::Size(1013, 486);
+			this->Controls->Add(this->button_find_category);
+			this->Controls->Add(this->button_find_transport);
+			this->Controls->Add(this->textBox_category_search);
+			this->Controls->Add(this->label2);
+			this->Controls->Add(this->textBox_transport_search);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->label_db_path);
-			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->textBox_db_path);
 			this->Controls->Add(this->group_operations);
 			this->Controls->Add(this->dataGridView1);
 			this->MaximizeBox = false;
+			this->MaximumSize = System::Drawing::Size(1029, 525);
+			this->MinimumSize = System::Drawing::Size(1029, 525);
 			this->Name = L"Main";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Информационно-справочная система учета доставки грузов";
@@ -246,6 +327,8 @@ namespace DeliveryAccountingSystem {
 	private: System::Void button_add_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void button_delete_Click(System::Object^ sender, System::EventArgs^ e);
 	private: System::Void button_edit_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void button_find_transport_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void button_find_category_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
 

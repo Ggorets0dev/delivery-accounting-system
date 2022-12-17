@@ -15,7 +15,7 @@ int main(array<String^>^ arg)
 	Application::Run(% main_form);
 }
 
-bool AreFieldsFilled(DataGridView^ grid_view, int index)
+bool areFieldsFilled(DataGridView^ grid_view, int index)
 {
 	return grid_view->Rows[index]->Cells[0]->Value != nullptr &&
 		grid_view->Rows[index]->Cells[1]->Value != nullptr &&
@@ -25,26 +25,69 @@ bool AreFieldsFilled(DataGridView^ grid_view, int index)
 		grid_view->Rows[index]->Cells[5]->Value != nullptr;
 }
 
-OleDbConnection^ CreateConnection(String^ path)
+OleDbConnection^ createConnection(String^ path)
 {
 	String^ connection_specs = "provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path;
 	OleDbConnection^ db_connection = gcnew OleDbConnection(connection_specs);
 	return db_connection;
 }
 
+bool findInDb(String^ db_path, String^ search, String^ column, DataGridView^ grid_view)
+{
+	bool status;
+
+	if (db_path == "" || !IO::File::Exists(db_path))
+	{
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		grid_view->Rows->Clear();
+		return false;
+	}
+
+	if (search == "")
+	{
+		MessageBox::Show("Поле поиска не заполнено!", "Ошибка");
+		return false;
+	}
+
+	OleDbConnection^ db_connection = createConnection(db_path);
+
+	db_connection->Open();
+	String^ query = "SELECT * FROM Товары WHERE [" + column + "]= '" + search + "'";
+	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
+	OleDbDataReader^ db_reader = db_command->ExecuteReader();
+
+	if (db_reader->HasRows)
+	{
+		while (db_reader->Read())
+			grid_view->Rows->Add(db_reader["Код"], db_reader["Наименование"], db_reader["Категория"], db_reader["Транспортное средство"], db_reader["Ранняя дата доставки"], db_reader["Поздняя дата доставки"], db_reader["Доставлен"]);
+		
+		status = true;
+	}
+	else
+	{
+		status = false;
+	}
+
+	db_reader->Close();
+	db_connection->Close();
+
+	return status;
+}
+
 System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	dataGridView1->Rows->Clear();
-	String^ db_path = textBox1->Text;
 
-	if (textBox1->Text == "" || !IO::File::Exists(db_path))
+	String^ db_path = textBox_db_path->Text;
+
+	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
 		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
 		dataGridView1->Rows->Clear();
 		return;
 	}
 
-	OleDbConnection^ db_connection = CreateConnection(db_path);
+	OleDbConnection^ db_connection = createConnection(db_path);
 
 	db_connection->Open();
 	String^ query = "SELECT * FROM Товары";
@@ -69,9 +112,9 @@ System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ s
 
 System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	String^ db_path = textBox1->Text;
+	String^ db_path = textBox_db_path->Text;
 
-	if (textBox1->Text == "" || !IO::File::Exists(db_path))
+	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
 		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
 		dataGridView1->Rows->Clear();
@@ -85,7 +128,7 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 
 	int index = dataGridView1->SelectedRows[0]->Index;
 
-	if (!AreFieldsFilled(dataGridView1, index)) {
+	if (!areFieldsFilled(dataGridView1, index)) {
 		MessageBox::Show("Не все данные были введены!", "Ошибка");
 		return;
 	}
@@ -100,7 +143,7 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 	record.late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
 	record.delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
 
-	OleDbConnection^ db_connection = CreateConnection(db_path);
+	OleDbConnection^ db_connection = createConnection(db_path);
 
 	db_connection->Open();
 	String^ query = "INSERT INTO Товары VALUES (" + record.code + ",'" + record.title + "','" + record.category + "','" + record.transport + "',#" + record.early_delivery_date + "#,#" + record.late_delivery_date +"#," + record.delivered.ToString() + ")";
@@ -118,9 +161,9 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 
 System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	String^ db_path = textBox1->Text;
+	String^ db_path = textBox_db_path->Text;
 
-	if (textBox1->Text == "" || !IO::File::Exists(db_path))
+	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
 		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
 		dataGridView1->Rows->Clear();
@@ -134,7 +177,7 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 
 	int index = dataGridView1->SelectedRows[0]->Index;
 
-	if (!AreFieldsFilled(dataGridView1, index)) {
+	if (!areFieldsFilled(dataGridView1, index)) {
 		MessageBox::Show("Не все данные были введены!", "Ошибка");
 		return;
 	}
@@ -149,7 +192,7 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 	record.late_delivery_date = dataGridView1->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
 	record.delivered = dataGridView1->Rows[index]->Cells[6]->Value != nullptr;
 
-	OleDbConnection^ db_connection = CreateConnection(db_path);
+	OleDbConnection^ db_connection = createConnection(db_path);
 
 	db_connection->Open();
 	String^ query = "UPDATE Товары SET Наименование='" + record.title + "', Категория='" + record.category + "', [Транспортное средство]='" + record.transport + "', [Ранняя дата доставки]=#" + record.early_delivery_date + "#, [Поздняя дата доставки]=#" + record.late_delivery_date + "#, Доставлен=" + record.delivered + " WHERE Код= " + record.code;
@@ -169,9 +212,9 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 
 System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	String^ db_path = textBox1->Text;
+	String^ db_path = textBox_db_path->Text;
 
-	if (textBox1->Text == "" || !IO::File::Exists(db_path))
+	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
 		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
 		dataGridView1->Rows->Clear();
@@ -193,7 +236,7 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 
 	int code = Int32::Parse(dataGridView1->Rows[index]->Cells[0]->Value->ToString());
 
-	OleDbConnection^ db_connection = CreateConnection(db_path);
+	OleDbConnection^ db_connection = createConnection(db_path);
 
 	db_connection->Open();
 	String^ query = "DELETE FROM Товары WHERE Код= " + code.ToString();
@@ -210,6 +253,30 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 	}
 
 	db_connection->Close();
+
+	return System::Void();
+}
+
+System::Void DeliveryAccountingSystem::Main::button_find_transport_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	dataGridView1->Rows->Clear();
+	
+	if (findInDb(textBox_db_path->Text, textBox_transport_search->Text, "Транспортное средство", dataGridView1))
+		MessageBox::Show("Запрос выполнен!", "Успех");
+	else
+		MessageBox::Show("Не удалось найти данные!", "Ошибка");
+
+	return System::Void();
+}
+
+System::Void DeliveryAccountingSystem::Main::button_find_category_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	dataGridView1->Rows->Clear();
+
+	if (findInDb(textBox_db_path->Text, textBox_category_search->Text, "Категория", dataGridView1))
+		MessageBox::Show("Запрос выполнен!", "Успех");
+	else
+		MessageBox::Show("Не удалось найти данные!", "Ошибка");
 
 	return System::Void();
 }
