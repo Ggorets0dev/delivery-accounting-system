@@ -187,7 +187,7 @@ namespace DeliveryAccountingSystem {
 			// 
 			// button_delete
 			// 
-			this->button_delete->Location = System::Drawing::Point(37, 243);
+			this->button_delete->Location = System::Drawing::Point(46, 220);
 			this->button_delete->Name = L"button_delete";
 			this->button_delete->Size = System::Drawing::Size(123, 43);
 			this->button_delete->TabIndex = 3;
@@ -197,7 +197,7 @@ namespace DeliveryAccountingSystem {
 			// 
 			// button_add
 			// 
-			this->button_add->Location = System::Drawing::Point(37, 98);
+			this->button_add->Location = System::Drawing::Point(46, 109);
 			this->button_add->Name = L"button_add";
 			this->button_add->Size = System::Drawing::Size(123, 43);
 			this->button_add->TabIndex = 1;
@@ -207,7 +207,7 @@ namespace DeliveryAccountingSystem {
 			// 
 			// button_edit
 			// 
-			this->button_edit->Location = System::Drawing::Point(37, 172);
+			this->button_edit->Location = System::Drawing::Point(46, 164);
 			this->button_edit->Name = L"button_edit";
 			this->button_edit->Size = System::Drawing::Size(123, 43);
 			this->button_edit->TabIndex = 2;
@@ -217,7 +217,7 @@ namespace DeliveryAccountingSystem {
 			// 
 			// button_load
 			// 
-			this->button_load->Location = System::Drawing::Point(37, 31);
+			this->button_load->Location = System::Drawing::Point(46, 53);
 			this->button_load->Name = L"button_load";
 			this->button_load->Size = System::Drawing::Size(123, 43);
 			this->button_load->TabIndex = 0;

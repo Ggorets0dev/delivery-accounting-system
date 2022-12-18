@@ -148,7 +148,7 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 	OleDbConnection^ db_connection = createConnection(db_path);
 
 	db_connection->Open();
-	String^ query = "INSERT INTO Товары VALUES (" + record.code + ",'" + record.title + "','" + record.category + "','" + record.transport + "',#" + record.early_delivery_date + "#,#" + record.late_delivery_date +"#," + record.delivered.ToString() + ")";
+	String^ query = "INSERT INTO Товары VALUES (" + record.code + ",'" + record.title + "','" + record.category + "','" + record.transport + "',#" + record.early_delivery_date + "#,#" + record.late_delivery_date +"#," + record.delivered->ToString() + ")";
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 
 	if (db_command->ExecuteNonQuery() == 1)
@@ -180,7 +180,7 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 
 	int index = dataGridView_Database->SelectedRows[0]->Index;
 
-	if (!areFieldsFilled(dataGridView_Database, index)) 
+	if (!areFieldsFilled(dataGridView_Database, index))
 	{
 		MessageBox::Show("Не все данные были введены!", "Ошибка");
 		return;
@@ -194,12 +194,12 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 	record.transport = dataGridView_Database->Rows[index]->Cells[3]->Value->ToString();
 	record.early_delivery_date = dataGridView_Database->Rows[index]->Cells[4]->Value->ToString()->Replace(".", "-");
 	record.late_delivery_date = dataGridView_Database->Rows[index]->Cells[5]->Value->ToString()->Replace(".", "-");
-	record.delivered = dataGridView_Database->Rows[index]->Cells[6]->Value != nullptr;
+	record.delivered = safe_cast<Boolean^>(dataGridView_Database->Rows[index]->Cells[6]->Value);
 
 	OleDbConnection^ db_connection = createConnection(db_path);
 
 	db_connection->Open();
-	String^ query = "UPDATE Товары SET Наименование='" + record.title + "', Категория='" + record.category + "', [Транспортное средство]='" + record.transport + "', [Ранняя дата доставки]=#" + record.early_delivery_date + "#, [Поздняя дата доставки]=#" + record.late_delivery_date + "#, Доставлен=" + record.delivered + " WHERE Код= " + record.code;
+	String^ query = "UPDATE Товары SET Наименование='" + record.title + "', Категория='" + record.category + "', [Транспортное средство]='" + record.transport + "', [Ранняя дата доставки]=#" + record.early_delivery_date + "#, [Поздняя дата доставки]=#" + record.late_delivery_date + "#, Доставлен=" + record.delivered->ToString() + " WHERE Код= " + record.code;
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 
 	if (db_command->ExecuteNonQuery() == 1)
