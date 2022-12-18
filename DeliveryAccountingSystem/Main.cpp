@@ -29,6 +29,7 @@ OleDbConnection^ createConnection(String^ path)
 {
 	String^ connection_specs = "provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path;
 	OleDbConnection^ db_connection = gcnew OleDbConnection(connection_specs);
+	
 	return db_connection;
 }
 
@@ -50,8 +51,8 @@ bool findInDb(String^ db_path, String^ search, String^ column, DataGridView^ gri
 	}
 
 	OleDbConnection^ db_connection = createConnection(db_path);
-
 	db_connection->Open();
+	
 	String^ query = "SELECT * FROM Товары WHERE [" + column + "]= '" + search + "'";
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 	OleDbDataReader^ db_reader = db_command->ExecuteReader();
@@ -60,7 +61,7 @@ bool findInDb(String^ db_path, String^ search, String^ column, DataGridView^ gri
 	{
 		while (db_reader->Read())
 			grid_view->Rows->Add(db_reader["Код"], db_reader["Наименование"], db_reader["Категория"], db_reader["Транспортное средство"], db_reader["Ранняя дата доставки"], db_reader["Поздняя дата доставки"], db_reader["Доставлен"]);
-		
+	
 		status = true;
 	}
 	else
@@ -70,7 +71,6 @@ bool findInDb(String^ db_path, String^ search, String^ column, DataGridView^ gri
 
 	db_reader->Close();
 	db_connection->Close();
-
 	return status;
 }
 
@@ -83,7 +83,6 @@ System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ s
 	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
 		MessageBox::Show("Не удалось найти базу данных!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-		dataGridView_Database->Rows->Clear();
 		return;
 	}
 
@@ -106,7 +105,6 @@ System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ s
 
 	db_reader->Close();
 	db_connection->Close();
-
 	return System::Void();
 }
 
@@ -146,8 +144,8 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 	record.delivered = dataGridView_Database->Rows[index]->Cells[6]->Value != nullptr;
 
 	OleDbConnection^ db_connection = createConnection(db_path);
-
 	db_connection->Open();
+	
 	String^ query = "INSERT INTO Товары VALUES (" + record.code + ",'" + record.title + "','" + record.category + "','" + record.transport + "',#" + record.early_delivery_date + "#,#" + record.late_delivery_date +"#," + record.delivered->ToString() + ")";
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 
@@ -157,7 +155,6 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 		MessageBox::Show("Не удалось внести данные!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	
 	db_connection->Close();
-
 	return System::Void();
 }
 
@@ -197,8 +194,8 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 	record.delivered = safe_cast<Boolean^>(dataGridView_Database->Rows[index]->Cells[6]->Value);
 
 	OleDbConnection^ db_connection = createConnection(db_path);
-
 	db_connection->Open();
+	
 	String^ query = "UPDATE Товары SET Наименование='" + record.title + "', Категория='" + record.category + "', [Транспортное средство]='" + record.transport + "', [Ранняя дата доставки]=#" + record.early_delivery_date + "#, [Поздняя дата доставки]=#" + record.late_delivery_date + "#, Доставлен=" + record.delivered->ToString() + " WHERE Код= " + record.code;
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 
@@ -206,9 +203,8 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 		MessageBox::Show("Данные успешно внесены!", "Успех", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	else
 		MessageBox::Show("Не удалось внести данные!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-
+	
 	db_connection->Close();
-
 	return System::Void();
 }
 
@@ -245,19 +241,14 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 	String^ query = "DELETE FROM Товары WHERE Код= " + code.ToString();
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 
+	dataGridView_Database->Rows->RemoveAt(index);
+
 	if (db_command->ExecuteNonQuery() == 1)
-	{
-		dataGridView_Database->Rows->RemoveAt(index);
 		MessageBox::Show("Запись успешно удалена!", "Успех", MessageBoxButtons::OK, MessageBoxIcon::Information);
-	}
 	else 
-	{
 		MessageBox::Show("Не удалось удалить запись!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-		dataGridView_Database->Rows->RemoveAt(index);
-	}
 
 	db_connection->Close();
-
 	return System::Void();
 }
 
