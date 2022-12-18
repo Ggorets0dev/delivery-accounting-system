@@ -38,14 +38,14 @@ bool findInDb(String^ db_path, String^ search, String^ column, DataGridView^ gri
 
 	if (db_path == "" || !IO::File::Exists(db_path))
 	{
-		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		grid_view->Rows->Clear();
 		return false;
 	}
 
 	if (search == "")
 	{
-		MessageBox::Show("Поле поиска не заполнено!", "Ошибка");
+		MessageBox::Show("Поле поиска не заполнено!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		return false;
 	}
 
@@ -82,7 +82,7 @@ System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ s
 
 	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
-		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		dataGridView_Database->Rows->Clear();
 		return;
 	}
@@ -101,7 +101,7 @@ System::Void DeliveryAccountingSystem::Main::button_load_Click(System::Object^ s
 	}
 	else
 	{
-		MessageBox::Show("Не удалось прочитать данные!", "Ошибка");
+		MessageBox::Show("Не удалось прочитать данные!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	}
 
 	db_reader->Close();
@@ -116,14 +116,14 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 
 	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
-		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		dataGridView_Database->Rows->Clear();
 		return;
 	}
 
 	if (dataGridView_Database->SelectedRows->Count != 1) 
 	{
-		MessageBox::Show("Строка не выбрана!", "Ошибка");
+		MessageBox::Show("Строка не выбрана!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		return;
 	}
 
@@ -131,7 +131,7 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 
 	if (!areFieldsFilled(dataGridView_Database, index)) 
 	{
-		MessageBox::Show("Не все данные были введены!", "Ошибка");
+		MessageBox::Show("Не все данные были введены!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		return;
 	}
 
@@ -152,9 +152,9 @@ System::Void DeliveryAccountingSystem::Main::button_add_Click(System::Object^ se
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 
 	if (db_command->ExecuteNonQuery() == 1)
-		MessageBox::Show("Данные успешно внесены!", "Успех");
+		MessageBox::Show("Данные успешно внесены!", "Успех", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	else
-		MessageBox::Show("Не удалось внести данные!", "Ошибка");
+		MessageBox::Show("Не удалось внести данные!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 	
 	db_connection->Close();
 
@@ -167,14 +167,14 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 
 	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
-		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		dataGridView_Database->Rows->Clear();
 		return;
 	}
 
 	if (dataGridView_Database->SelectedRows->Count != 1) 
 	{
-		MessageBox::Show("Строка не выбрана!", "Ошибка");
+		MessageBox::Show("Строка не выбрана!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		return;
 	}
 
@@ -182,7 +182,7 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 
 	if (!areFieldsFilled(dataGridView_Database, index))
 	{
-		MessageBox::Show("Не все данные были введены!", "Ошибка");
+		MessageBox::Show("Не все данные были введены!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		return;
 	}
 
@@ -203,9 +203,9 @@ System::Void DeliveryAccountingSystem::Main::button_edit_Click(System::Object^ s
 	OleDbCommand^ db_command = gcnew OleDbCommand(query, db_connection);
 
 	if (db_command->ExecuteNonQuery() == 1)
-		MessageBox::Show("Данные успешно внесены!", "Успех");
+		MessageBox::Show("Данные успешно внесены!", "Успех", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	else
-		MessageBox::Show("Не удалось внести данные!", "Ошибка");
+		MessageBox::Show("Не удалось внести данные!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 
 	db_connection->Close();
 
@@ -218,14 +218,14 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 
 	if (textBox_db_path->Text == "" || !IO::File::Exists(db_path))
 	{
-		MessageBox::Show("Не удалось найти базу данных!", "Ошибка");
+		MessageBox::Show("Не удалось найти базу данных!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		dataGridView_Database->Rows->Clear();
 		return;
 	}
 
 	if (dataGridView_Database->SelectedRows->Count != 1) 
 	{
-		MessageBox::Show("Строка не выбрана!", "Ошибка");
+		MessageBox::Show("Строка не выбрана!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		return;
 	}
 
@@ -233,7 +233,7 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 
 	if (dataGridView_Database->Rows[index]->Cells[0]->Value == nullptr)
 	{
-		MessageBox::Show("Код недоступен!", "Ошибка");
+		MessageBox::Show("Код недоступен!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		return;
 	}
 
@@ -248,11 +248,11 @@ System::Void DeliveryAccountingSystem::Main::button_delete_Click(System::Object^
 	if (db_command->ExecuteNonQuery() == 1)
 	{
 		dataGridView_Database->Rows->RemoveAt(index);
-		MessageBox::Show("Запись успешно удалена!", "Успех");
+		MessageBox::Show("Запись успешно удалена!", "Успех", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	}
 	else 
 	{
-		MessageBox::Show("Не удалось удалить запись!", "Ошибка");
+		MessageBox::Show("Не удалось удалить запись!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		dataGridView_Database->Rows->RemoveAt(index);
 	}
 
@@ -266,9 +266,9 @@ System::Void DeliveryAccountingSystem::Main::button_find_transport_Click(System:
 	dataGridView_Database->Rows->Clear();
 	
 	if (findInDb(textBox_db_path->Text, textBox_transport_search->Text, "Транспортное средство", dataGridView_Database))
-		MessageBox::Show("Запрос выполнен!", "Успех");
+		MessageBox::Show("Запрос выполнен!", "Успех", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	else
-		MessageBox::Show("Не удалось найти данные!", "Ошибка");
+		MessageBox::Show("Не удалось найти данные!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 
 	return System::Void();
 }
@@ -278,9 +278,9 @@ System::Void DeliveryAccountingSystem::Main::button_find_category_Click(System::
 	dataGridView_Database->Rows->Clear();
 
 	if (findInDb(textBox_db_path->Text, textBox_category_search->Text, "Категория", dataGridView_Database))
-		MessageBox::Show("Запрос выполнен!", "Успех");
+		MessageBox::Show("Запрос выполнен!", "Успех", MessageBoxButtons::OK, MessageBoxIcon::Information);
 	else
-		MessageBox::Show("Не удалось найти данные!", "Ошибка");
+		MessageBox::Show("Не удалось найти данные!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 
 	return System::Void();
 }
