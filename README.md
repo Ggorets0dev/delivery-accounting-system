@@ -1,5 +1,7 @@
 # DeliveryAccountingSystem
-Desktop x86 application made with WinForms (.NET Framework 4.7.2, C++/CLI). It is a coursework on the 2nd course, specialty "Applied Computer Science" 09.03.03, National Research University of Electronic Technology. *Made by order (freelance) of another student, the defense was conducted by him.*
+Desktop x86 application made with WinForms (.NET Framework 4.7.2, C++/CLI). It is a coursework on the 2nd course, specialty "Applied Computer Science" 09.03.03, National Research University of Electronic Technology. **Interface language: Russian.**
+
+> **Note:** Made by order (freelance) of another student, the defense was conducted by him.
 
 > **Warning**: Available only in 32 bit mode!
 
