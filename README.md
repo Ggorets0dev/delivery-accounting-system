@@ -11,14 +11,14 @@ Desktop x86 application made with WinForms (.NET Framework 4.7.2, C++/CLI). It i
 The software is the interface to the database describing the delivery of goods of different categories. More detailed terms of reference are available in the file **technical_task.docx**
 
 <p align='center'>
-       <img height=310 src="example.png"/>
+       <img height=310 src="interface.png"/>
 </p>
 
 ## Tech
 ---
 
 ### **General**
-Database is based on Microsoft Access .mdb file, communication with the application is through Microsoft.Jet (special driver required). Queries are written in the SQL language.
+Database is based on Microsoft Access .mdb file, communication with the application is through Microsoft.Jet (special driver required). Queries are written in the SQL.
 
 ### **Features**
 The following features are available:
